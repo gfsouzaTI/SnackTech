@@ -3,6 +3,7 @@ using SnackTech.Application;
 using SnackTech.Adapter.DataBase;
 using SnackTech.Adapter.DataBase.Context;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,8 +18,13 @@ builder.Services.AddHealthChecks()
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
 builder.Services.AddSwaggerGen(c => {
     c.DescribeAllParametersInCamelCase();
+    c.IncludeXmlComments(xmlPath);
 });
 
 builder.Services.AddDbContext<RepositoryDbContext>(options =>
