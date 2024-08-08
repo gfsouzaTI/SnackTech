@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using SnackTech.Adapter.DataBase.Context;
 using SnackTech.Domain.Enums;
 using SnackTech.Domain.Models;
-using SnackTech.Domain.Ports.Driving;
+using SnackTech.Domain.Ports.Driven;
 
 namespace SnackTech.Adapter.DataBase.Repositories
 {
@@ -25,6 +25,7 @@ namespace SnackTech.Adapter.DataBase.Repositories
         public async Task<IEnumerable<Produto>> PesquisarPorCategoriaAsync(CategoriaProduto categoria)
         {
             return await _repositoryDbContext.Produtos
+                    .AsNoTracking()
                     .Where(p => p.Categoria == categoria)
                     .ToListAsync();
         }
@@ -32,6 +33,7 @@ namespace SnackTech.Adapter.DataBase.Repositories
         public async Task<Produto?> PesquisarPorIdentificacaoAsync(Guid identificacao)
         {
             return await _repositoryDbContext.Produtos
+                .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == identificacao);
         }
 
