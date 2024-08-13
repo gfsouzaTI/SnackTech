@@ -4,6 +4,7 @@ using SnackTech.Adapter.DataBase;
 using SnackTech.Adapter.DataBase.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,9 @@ builder.Services.AddSwaggerGen(c =>
     c.EnableAnnotations();
     c.DescribeAllParametersInCamelCase();
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "SnackTech", Version = "v1" });
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
 });
 
 builder.Services.AddDbContext<RepositoryDbContext>(options =>
